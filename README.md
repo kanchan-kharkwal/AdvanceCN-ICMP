@@ -34,13 +34,15 @@ The project adopts a modular architecture to ensure clarity and ease of maintena
 ## **Challenges**
 
 1. Configuring firewall settings to allow inbound and outbound ICMP traffic.
-    ![ICMP](images/Screenshot(315).png =250x)
+    ![ICMP](images/Screenshot(315).png)
 
-    ![ICMP](images/Screenshot(308).png =250x)
+    ![ICMP](images/Screenshot(308).png)
    
-3. Handling indefinite wait times for replies from external servers (e.g., Google's public DNS).  
+3. Handling indefinite wait times for replies from external servers (e.g., Google's public DNS).
+     ![ICMP](images/Screenshot(316).png)
+
 4. Ensuring compatibility and proper functionality across different platforms (Windows and Ubuntu-Linux).  
-5. Debugging and validating checksum implementation for packet integrity.
+6. Debugging and validating checksum implementation for packet integrity.
 
 ---
 
@@ -72,13 +74,16 @@ The project implementation involved:
 The implementation was successfully tested on both local systems and external servers. Key findings include:
 
 - **Round Trip Time (RTT)**:  
-  RTT varied based on network conditions and distance to the target server. For Google's DNS (8.8.8.8), an average RTT of 15ms was observed.  
+  RTT varied based on network conditions and distance to the target server. For Cloud DNS (1.1.1.1), an average RTT of 15ms was observed.
+  ![ICMP](images/Screenshot(317).png)
 
 - **Packet Loss**:  
-  No packet loss was detected in controlled local testing. For external servers, occasional losses were observed due to routing issues.  
+  No packet loss was detected in controlled local testing. For external servers, occasional losses were observed due to routing issues.
+  As detected in tracert that packet was lost during hops in the attached image.
+  ![ICMP](images/Screenshot(313).png)
 
 - **Indefinite Wait Time**:  
-  This was resolved by implementing timeouts and retry mechanisms for external server requests.  
+  This was resolved by implementing timeouts and retry mechanisms for external server requests.   ![ICMP](images/Screenshot(310).png)
 
 The project demonstrated accurate RTT calculations and error handling mechanisms across platforms.  
 
