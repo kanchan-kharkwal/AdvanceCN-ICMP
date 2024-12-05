@@ -41,8 +41,12 @@ The project adopts a modular architecture to ensure clarity and ease of maintena
 3. Handling indefinite wait times for replies from external servers (e.g., Google's public DNS).
      ![ICMP](images/Screenshot(316).png)
 
-4. Ensuring compatibility and proper functionality across different platforms (Windows and Ubuntu-Linux).  
-6. Debugging and validating checksum implementation for packet integrity.
+4. Ensuring compatibility and proper functionality across different platforms (Windows and Ubuntu-Linux).
+     ![ICMP](images/image1.png)
+
+     ![ICMP](images/image3.png)
+   
+6.  Debugging and validating checksum implementation for packet integrity.
 
 ---
 
