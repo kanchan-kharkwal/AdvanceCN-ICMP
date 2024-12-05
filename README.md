@@ -4,12 +4,6 @@ This project involves the implementation of a simplified version of the PING uti
 
 ---
 
-## **Abstract**
-
-This project focuses on the development of a lightweight version of the PING utility based on the ICMP protocol. The implementation aims to measure network performance by sending ICMP Echo Requests to target IP addresses and calculating the Round Trip Time (RTT). The project highlights the process of packet construction, transmission, reception, and error handling. It was tested on both local systems and external servers like Google's DNS (8.8.8.8) to evaluate RTT and detect routing delays. This project adheres to modular design principles for clarity and scalability.
-
----
-
 ## **Introduction**
 
 The PING utility is a crucial tool in networking, allowing users to test connectivity and measure the delay between systems. This project demonstrates a simplified implementation of PING using ICMP (Internet Control Message Protocol). The ICMP Echo Request and Echo Reply mechanisms are used to exchange packets between the source and destination. Key metrics, such as Round Trip Time (RTT) and packet loss, are calculated for performance analysis. The project was developed with a focus on modular design and cross-platform compatibility (Windows and Linux).
@@ -39,10 +33,11 @@ The project adopts a modular architecture to ensure clarity and ease of maintena
 
 ## **Challenges**
 
-1. Configuring firewall settings to allow inbound and outbound ICMP traffic.  
-2. Handling indefinite wait times for replies from external servers (e.g., Google's public DNS).  
-3. Ensuring compatibility and proper functionality across different platforms (Windows and Ubuntu-Linux).  
-4. Debugging and validating checksum implementation for packet integrity.
+1. Configuring firewall settings to allow inbound and outbound ICMP traffic.
+    
+3. Handling indefinite wait times for replies from external servers (e.g., Google's public DNS).  
+4. Ensuring compatibility and proper functionality across different platforms (Windows and Ubuntu-Linux).  
+5. Debugging and validating checksum implementation for packet integrity.
 
 ---
 
