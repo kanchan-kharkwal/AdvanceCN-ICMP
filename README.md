@@ -45,9 +45,9 @@ The project adopts a modular architecture to ensure clarity and ease of maintena
 
 5. Ensuring compatibility and proper functionality across different platforms (Windows and Ubuntu-Linux).
 
-   Ubuntu~~
+   Ubuntu~~ Client - Server
    
-     ![ICMP](images/image1.png)
+     ![ICMP](images/image2.png)
 
      ![ICMP](images/image3.png)
    
