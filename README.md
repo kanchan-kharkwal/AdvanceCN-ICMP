@@ -34,9 +34,9 @@ The project adopts a modular architecture to ensure clarity and ease of maintena
 ## **Challenges**
 
 1. Configuring firewall settings to allow inbound and outbound ICMP traffic.
-    ![ICMP](images/Screenshot(315).png=250x)
+    ![ICMP](images/Screenshot(315).png =250x)
 
-    ![ICMP](images/Screenshot(308).png=250x)
+    ![ICMP](images/Screenshot(308).png =250x)
    
 3. Handling indefinite wait times for replies from external servers (e.g., Google's public DNS).  
 4. Ensuring compatibility and proper functionality across different platforms (Windows and Ubuntu-Linux).  
