@@ -1,94 +1,63 @@
 import os
-import sys
-import time
 import socket
 import struct
-import select
+import time
 
 ICMP_ECHO_REQUEST = 8  # ICMP type for Echo Request
-DATA_SIZE = 32  # Size of the data in bytes
 
-def checksum(source_string):
+
+def calculate_checksum(data):
     """Calculate the checksum of the packet."""
-    countTo = (len(source_string) // 2) * 2
-    sum = 0
-    for count in range(0, countTo, 2):
-        val = source_string[count + 1] * 256 + source_string[count]
-        sum += val
-    if countTo < len(source_string):
-        sum += source_string[len(source_string) - 1]
-    sum = (sum >> 16) + (sum & 0xFFFF)
-    sum += (sum >> 16)
-    return ~sum & 0xFFFF
+    checksum = 0
+    count_to = (len(data) // 2) * 2
+    for count in range(0, count_to, 2):
+        val = data[count + 1] * 256 + data[count]
+        checksum += val
+    if count_to < len(data):
+        checksum += data[-1]
+    checksum = (checksum >> 16) + (checksum & 0xFFFF)
+    checksum += (checksum >> 16)
+    return ~checksum & 0xFFFF
 
-def create_packet(id):
-    """Create an ICMP packet."""
-    # Header
-    header = struct.pack('bbHHh', ICMP_ECHO_REQUEST, 0, 0, id, 1)
-    # Data
-    data = bytes(DATA_SIZE)  # 32 bytes of data
-    # Checksum
-    my_checksum = checksum(header + data)
-    # Repack header with checksum
-    header = struct.pack('bbHHh', ICMP_ECHO_REQUEST, 0, socket.htons(my_checksum), id, 1)
+
+def create_icmp_packet(packet_id):
+    """Create an ICMP Echo Request packet."""
+    header = struct.pack('!BBHHH', ICMP_ECHO_REQUEST, 0, 0, packet_id, 1)
+    data = b'Hello!'  # Payload
+    checksum = calculate_checksum(header + data)
+    header = struct.pack('!BBHHH', ICMP_ECHO_REQUEST, 0, socket.htons(checksum), packet_id, 1)
     return header + data
 
-def handle_response(sock, packet_id, start_time):
-    """Handle the response from the ping."""
-    while True:
-            print("Waiting for response...")
-            # Receive the response
-            recv_packet, addr = sock.recvfrom(1024)
-            time_received = time.time()
-            icmp_header = recv_packet[20:28]
-            type, code, checksum, recieved_id, sequence = struct.unpack('bbHHh', icmp_header)
 
-            if recieved_id == packet_id:
-                round_trip_time = (time_received - start_time) * 1000  # Convert to milliseconds
-                print(f"Reply from {addr[0]}: time={round_trip_time:.2f} ms")
-                break
-            else:
-                print("Received packet with different ID, ignoring.")
-                break
-
-
-def ping(host, timeout=5):
-    """Send an ICMP Echo Request to the specified host."""
-    
+def ping(host):
+    """Send an ICMP Echo Request to the host and calculate RTT."""
     try:
-        # Create a raw socket
-        icmp = socket.getprotobyname("icmp")
-        sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
-        
-         # Create packet
-        packet_id = os.getpid() & 0xFFFF  # Get the process ID
-        packet = create_packet(packet_id)
-    
-        print(f"Sending packet to {host}...")
-        sock.sendto(packet, (host, 1))  # Send packet to the host
-    
-    
-        # Wait for a reply
-        print("Packet sent, waiting for reply...")
-        start_time = time.time()
-        handle_response(sock, packet_id, start_time)
-        
-        # Set a timeout of 1 second for the socket
-        sock.settimeout(timeout)
-        
+        print(f"Sending packets to {target}...")
+        sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.getprotobyname("icmp"))
     except PermissionError:
-        print("You need to run this script with administrative privileges.")
-        sys.exit(1)
-    
+        print("Run the script with administrative privileges.")
+        return
+
+    packet_id = os.getpid() & 0xFFFF  # Unique identifier for the packet
+    packet = create_icmp_packet(packet_id)
+
+    try:
+        print("Packet sent, waiting for reply...")
+        sock.sendto(packet, (host, 1))
+        start_time = time.time()
+        print("Waiting for response...")
+
+        sock.settimeout(3)
+        reply, addr = sock.recvfrom(1024)
+        rtt = (time.time() - start_time) * 1000  # Round-Trip Time in ms
+
+        print(f"Reply from {addr[0]}: time={rtt:.2f} ms")
     except socket.timeout:
         print("Request timed out.")
-    
-    except Exception as e:
-        print(f"An error occurred: {e}")
-    
     finally:
         sock.close()
 
+
 if __name__ == "__main__":
-    target_host = "8.8.8.8"  
-    ping(target_host)
+    target = "8.8.8.8"  # Google Public DNS
+    ping(target)
