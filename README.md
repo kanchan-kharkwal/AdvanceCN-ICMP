@@ -1,5 +1,4 @@
-# **Implementing a Smaller Version of PING using ICMP Protocol** 
-- DAIICT(Masters Project)
+# **Implementing a Smaller Version of PING using ICMP Protocol** - DAIICT(Masters Project)
 
 This project involves the implementation of a simplified version of the PING utility using the ICMP protocol. It demonstrates the process of sending ICMP Echo Requests to a target IP address, calculating the Round Trip Time (RTT), and analyzing network performance.
 
